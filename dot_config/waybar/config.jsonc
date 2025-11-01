@@ -1,0 +1,92 @@
+// -*- mode: jsonc -*-
+{
+  "output": "DP-5",
+  "height": 30,
+  "spacing": 4,
+  "modules-left": [
+    "hyprland/workspaces"
+  ],
+  "modules-center": [
+    "hyprland/window"
+  ],
+  "modules-right": [
+    "custom/weather",
+    "cpu",
+    "memory",
+    "wireplumber",
+    "temperature",
+    "network",
+    "clock",
+    "tray",
+    "custom/updates"
+  ],
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-scroll-up": "hyprctl dispatch workspace e+1",
+    "on-scroll-down": "hyprctl dispatch workspace e-1"
+  },
+  "hyprland/window": {
+    "format": "{}",
+    "rewrite": {
+      "(.*) — Firefox Developer Edition": "  $1",
+      "vim": " ",
+      "make": " "
+    },
+    "separate-outputs": true
+  },
+  "network": {
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ],
+    "format": "{icon}",
+    "format-wifi": " ⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes} {icon} ",
+    "format-ethernet": "⇣ {bandwidthDownBytes:7}  ⇡ {bandwidthUpBytes:7}  󰈀 ",
+    "format-disconnected": "󰤮",
+    "tooltip-format-wifi": "{essid} ({frequency} GHz)",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 2
+  },
+  "wireplumber": {
+    "format": "{volume}% {icon}",
+    "format-icons": [
+      " ",
+      " ",
+      "  "
+    ]
+  },
+  "temperature": {
+    "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
+    "format": "{temperatureC}°C "
+  },
+  "clock": {
+    "format": "{:%H:%M}   ",
+    "tooltip-format": "<big>{:%Y %B} </big>\n<tt><small>{calendar}</small></tt> ",
+    "format-alt": "{:%Y-%m-%d}  "
+  },
+  "cpu": {
+    "format": "{usage}% 󰻠 "
+  },
+  "memory": {
+    "format": "{percentage}%  "
+  },
+  "custom/weather": {
+    "format": "{}",
+    "exec": "~/.config/waybar/scripts/weather.sh",
+    "interval": 3600,
+    "signal": 8, // 定义信号编号，用于手动触发更新
+    "return-type": "json",
+    "on-click": "xdg-open 'https://v2.wttr.in/Wuhan'"
+  },
+  "custom/updates": {
+    "format": "{}  ",
+    "exec": "~/.config/waybar/scripts/check-updates.sh",
+    "return-type": "json",
+    "signal": 7, // 定义信号编号，用于手动触发更新
+    "interval": 900,
+    "on-click": "pkill -RTMIN+7 waybar" // 点击时向waybar发送8号信号
+  }
+}

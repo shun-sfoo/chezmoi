@@ -1,0 +1,62 @@
+@import "/etc/xdg/waybar/style.css";
+
+window#waybar {
+    background-color: rgba(36, 40, 59, 0.5);
+    border-bottom: 3px solid rgba(100, 114, 125, 0.5);
+    color: #c0caf5;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+#workspaces button.active {
+    background-color: #545c7e;
+    box-shadow: inset 0 -3px #c0caf5;
+}
+
+#custom-weather {
+    background-color: #73daca;
+    color: #000000;
+    padding-left: 10px;  /* 左侧间隙 */
+    padding-right: 10px; /* 右侧间隙 */
+}
+
+#network {
+    background-color: #7aa2f7;
+    min-width: 160px; 
+}
+
+#cpu {
+    background-color: #9fe044;
+}
+
+#memory {
+    background-color: #bb9af7
+}
+
+
+#wireplumber {
+    background-color: #c0caf5
+}
+
+#clock {
+    background-color: #414868
+}
+
+#tray {
+    background-color: #f7768e
+}
+
+#temperature {
+    background-color: #e0af68
+}
+
+#custom-updates {
+    background-color: #73daca;
+    color: #000000;
+    padding-left: 10px;  /* 左侧间隙 */
+    padding-right: 10px; /* 右侧间隙 */
+}
+
+#custom-updates.update-available {
+    background-color: #f7768e;
+}
