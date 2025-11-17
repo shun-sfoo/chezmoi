@@ -1,0 +1,6 @@
+font-family = "Operator Mono Lig"
+font-size = 17
+theme = TokyoNight Storm
+background-opacity = 0.62
+background-blur = true
+quit-after-last-window-closed = true
