@@ -1,0 +1,71 @@
+export EDITOR=nvim
+bindkey -e
+export HISTFILE=~/.zsh_history
+export HISTSIZE=1000000   # the number of items for the internal history list
+export SAVEHIST=1000000   # maximum number of items for the history file
+# The meaning of these options can be found in man page of `zshoptions`.
+setopt HIST_IGNORE_ALL_DUPS  # do not put duplicated command into history list
+setopt HIST_SAVE_NO_DUPS  # do not save duplicated command
+setopt HIST_REDUCE_BLANKS  # remove unnecessary blanks
+setopt INC_APPEND_HISTORY_TIME  # append command to history file immediately after execution
+setopt EXTENDED_HISTORY  # record command start time
+
+alias ipi="curl cip.cc"
+alias vim="nvim"
+alias ls="eza --icons"
+alias ll="eza -lh --icons"
+alias la="eza -lha --icons"
+alias tree="eza -T --icons --git-ignore"
+
+
+{{ if eq .chezmoi.os "darwin" -}}
+[ -e /usr/local/bin/starship ] && eval "$(starship init zsh)"
+[ -e /usr/local/bin/zoxide ] && eval "$(zoxide init zsh)"
+[ -e /usr/local/bin/mcfly ] && eval "$(mcfly init zsh)"
+{{ else if eq .chezmoi.os "linux" -}}
+[ -e /usr/bin/starship ] && eval "$(starship init zsh)"
+[ -e /usr/bin/zoxide ] && eval "$(zoxide init zsh)"
+[ -e /usr/bin/mcfly ] && eval "$(mcfly init zsh)"
+{{ end -}}
+
+
+{{ if eq .chezmoi.os "darwin" -}}
+[ -d /usr/local/share/zsh-autosuggestions ] && source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+[ -d /usr/local/share/zsh-syntax-highlighting ] && source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+{{ else if eq .chezmoi.os "linux" -}}
+[ -d /usr/share/zsh/plugins ] \
+  && source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+{{ end -}}
+
+
+
+[[ ! -r '$HOME/.opam/opam-init/init.zsh' ]] || source '$HOME/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
+
+pkgadd(){
+  if [ $# -lt 1 ]; then
+    exit 0
+  fi
+
+{{ if eq .chezmoi.os "darwin" -}}
+brew install "$@"
+brew leaves && brew list --cask | sed "s/ /\n/g" > $HOME/pkg_macos.list
+{{ else if eq .chezmoi.os "linux" -}}
+sudo pacman -S --needed "$@"
+pacman -Qqe >$HOME/pkg.list
+{{ end -}}
+}
+
+pkgrm(){
+  if [ $# -lt 1 ]; then
+    exit 0
+  fi
+{{ if eq .chezmoi.os "darwin" -}}
+brew uninstall "$@"
+brew leaves && brew list --cask | sed "s/ /\n/g" > $HOME/pkg_arch.list
+{{ else if eq .chezmoi.os "linux" -}}
+sudo pacman -Rns "$@"
+pacman -Qqe >$HOME/pkg.list
+{{ end -}}
+}
+
